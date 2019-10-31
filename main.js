@@ -1,3 +1,5 @@
+// 这是一个git版本的
+
 var suits = ["spade","daimond","club","heart"], 
 	points = ["A",2,3,4,5,6,7,8,9,10,"J","Q","K"], 
 	cardNames = ["sha","shan","tao","guo"], 

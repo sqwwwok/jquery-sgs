@@ -11,24 +11,23 @@
 				margin: 0;
 				padding: 0;
 			}
-			.play{
-				height: 250px;
+			.player{
+				height: 200px;
+				background-color: antiquewhite;
+			}
+			#playBox{
+				height: 500px;
 				width: 70%;
 			}
-			.history{
+			#history{
 				float:right;
 				width:30%;
 				height: 500px;
 				background-color: black;
 			}
-			.play>div{
-				height: 200px;
-			}
-			#player1{
-				background-color:red;
-			}
-			#player2{
-				background-color: blue;
+			#battle{
+				height: 100px;
+				background-color: aquamarine;
 			}
 			#mainpage{
 				display: none;
@@ -39,16 +38,18 @@
 		<button id="start" onclick="gameStart()">开始游戏</button>
 		<div id="mainpage">
 			<div>
-				<div class="history"></div>
-				<div class="play">
-					<p id="player1Name">player1</p>
-					<div id="player1"></div>
+				<div id="history"></div>
+				<div id="playBox">
+					<div class="player" id="player1">
+						<div id="player1Body"></div>
+						<div id="player1Hand"></div>
+					</div>
+					<div id="battle"></div>
+					<div class="player" id="player2">
+						<div id="player2Body"></div>
+						<div id="player2Hand"></div>
+					</div>
 				</div>
-				<div class="play">
-					<p id="player2Name">player2</p>
-					<div id="player2"></div>
-				</div>
-			</div>
 			<button id="restart" onclick="gameRestart()">重新开始</button>
 			<button id="end" onclick="gameEnd()">结束游戏</button>
 		</div>

@@ -3,6 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<title>三国杀</title>
+		<script src="vue.js"></script>
 		<script src="jquery-3.4.1.js"></script>
 		<script src="main.js"></script>
 		<style>
@@ -26,7 +27,7 @@
 				float:right;
 				width:30%;
 				height: 500px;
-				background-color: black;
+				background-color: gray;
 			}
 			#battle{
 				height: 100px;
@@ -38,7 +39,7 @@
 		</style>
 	</head>
 	<body>
-		<button id="start" onclick="gameStart()">开始游戏</button>
+		<button type="button" id="start" onclick="gameStart()">开始游戏</button>
 		<div id="mainpage">
 			<div>
 				<div id="history"></div>
@@ -53,8 +54,8 @@
 						<div id="player2Hand"></div>
 					</div>
 				</div>
-			<button id="restart" onclick="gameRestart()">重新开始</button>
-			<button id="end" onclick="gameEnd()">结束游戏</button>
+			<button type="button" id="restart" onclick="gameRestart()">重新开始</button>
+			<button type="button" id="end" onclick="gameEnd()">结束游戏</button>
 		</div>
 	</body>
 </html>

@@ -4,43 +4,14 @@
 		<meta charset="utf-8">
 		<title>三国杀</title>
 		<script src="lib/jquery-3.4.1.js"></script>
-		<script src="main.js"></script>
-		<style>
-			/* 伪类选择器not */
-			
-			/* 拜托你把CSS代码放到另一个文件夹 */
-			
-			*{
-				margin: 0;
-				padding: 0;
-			}
-			.player{
-				height: 200px;
-				background-color: antiquewhite;
-			}
-			#playBox{
-				height: 500px;
-				width: 70%;
-			}
-			#history{
-				float:right;
-				width:30%;
-				height: 500px;
-				background-color: gray;
-			}
-			#battle{
-				height: 100px;
-				background-color: aquamarine;
-			}
-			#mainpage{
-				display: none;
-			}
-		</style>
+		<script src="battlepage.js"></script>
+		<link href="battlepage_style.css" type="text/css" rel="stylesheet" />
 	</head>
 	<body>
 		<button type="button" id="start" onclick="gameStart()">开始游戏</button>
 		<div id="mainpage">
 			<div>
+				<div id="sidebar"><img id="Kurisu" src="SanGuoKill/images/Kurisu.png"></div>
 				<div id="history"></div>
 				<div id="playBox">
 					<div class="player" id="player1">

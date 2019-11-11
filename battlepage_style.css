@@ -26,3 +26,7 @@
 #sidebar{
     float: left;
 }
+img{
+    position: absolute;
+    /* clip: rect(0px,0px,0px,0px); */
+}

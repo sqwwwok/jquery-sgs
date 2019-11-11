@@ -257,7 +257,7 @@ function gameStart () {
 	$("#mainpage").show();
 	var kurisu = $("img#Kurisu");
 	kurisu.click(function(){
-		kurisu.hide();
+		kurisu.hide()
 	})
 	// 测试playStart函数
 	var round = playStart()

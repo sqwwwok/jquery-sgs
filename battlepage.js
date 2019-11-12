@@ -49,8 +49,11 @@ class Hand extends Array{
 	showCards(){
 		this.map(function(current){
 			$("#" + this.player + "Hand")
-				.append(current.showCard("fixed").click(
-					()=>{$("#"+this.player+"Tips").html("<p>这不是你的回合！</p>")}
+				.append(current.showCard("fixed")
+								.off("click")
+								.click(()=>{
+									$("#"+this.player+"Tips").html("<p>这不是你的回合！</p>")
+								}
 				))
 		},this.owner)
 	}
@@ -134,7 +137,6 @@ class Person {
 		}
 		//清除card
 		this.hand.splice(this.hand.indexOf(card),1);
-		// console.log(card);
 		card.cardButton.remove();
 		card = null;
 	}
@@ -156,99 +158,135 @@ function playStart(){
 	[player1,player2].forEach(function(current){
 		current.showBody();
 		current.draw2Hand(4,library);
-	})
+	});
+	round();
 
-	
-	// // 使用闭包把回合封装起来
 	function round() {
 		var subject, object;
+		startRound();
 		
-		// 判别回合的主宾
-		order%2 === 1 ? [subject,object] = [player1,player2] : [player2,player1];
-		$("#"+subject.player+"Tips").text("你的回合");
-		$("#"+object.player+"Tips").text("对手的回合");
-		$("#"+subject.player).append($('<button type="button" id="finish">结束回合</button>'));
-		$("#finish").click(finish);
+		// 回合初始化
+		function startRound(){
+			order%2 === 1 ? [subject,object] = [player1,player2] : [player2,player1];
+			$("#"+subject.player+"Tips").text("你的回合");
+			$("#"+object.player+"Tips").text("对手的回合");
+			$("#"+subject.player).append($('<button type="button" id="finish">结束回合</button>'));
+			$("#finish").click(finishRound);
+			drawHand();
+		}
+
 		
 		// 摸牌
-		if(order === 1){
-			subject.draw2Hand(1,library)
-		}else{
-			subject.draw2Hand(2,library)
+		function drawHand(){
+			if(order === 1){
+				subject.draw2Hand(1,library)
+			}else{
+				subject.draw2Hand(2,library)
+			}
+			useCard();
 		}
+
 		
-	 	// 打牌
-		var shaNum = 0;
-		subject.hand.forEach(function(card){
-			if(!(card.name==="闪"
-				||(card.name==="桃"&&subject.health()==="full")
-				||(card.name==="过河拆桥"&&object.hand.length===0)))
-			  {card.showCard("optional")}
-			card.cardButton.click(() => {
-				switch (card.name) {
-					case "杀":
-						if(shaNum){
-							$("#"+subject.player+"Tips").text("你已经出过杀了！")
-						}else{
-							shaNum++;
-							object.shaTarget = true;
-							if(object.checkCard("闪")){
-								// 异步处理
-
+		 // 打牌
+		 function useCard(){
+			let shaNum = 0;
+			// 修饰subject的手牌
+			subject.hand.forEach(function(card){
+				// 高亮能打的手牌
+				if(!(card.name==="闪"
+					||(card.name==="桃"&&subject.health()==="full")
+					||(card.name==="过河拆桥"&&object.hand.length===0)))
+				  {card.showCard("optional")}
+	
+				// 给手牌绑定click事件
+				card.cardButton.off("click").click(() => {
+					switch (card.name) {
+						case "杀":
+							if(shaNum){
+								$("#"+subject.player+"Tips").text("你已经出过杀了！")
+							}else{
+								shaNum++;
+								object.shaTarget = true;
+								if(object.checkCard("闪")){
+									// 异步处理
+	
+								}
+								if(object.shaTarget){
+									object.minusHp(1);
+								}
+							}		
+							break;
+						case "桃":
+							if(object.health()==="notfull"){
+								object.body.hp++;
 							}
-							if(object.shaTarget){
-								object.minusHp(1);
+							break;
+						case "过河拆桥":
+							if(object.hand.length===0){
+								$("#"+subject.player+"Tips").text("对方已经没有牌了！")
+							}else{
+								object.removeHand("random");
+	
 							}
-						}		
-						break;
-					case "桃":
-						if(object.health()==="notfull"){
-							object.body.hp++;
-						}
-						break;
-					case "过河拆桥":
-						if(object.hand.length===0){
-							$("#"+subject.player+"Tips").text("对方已经没有牌了！")
-						}else{
-							object.removeHand("random");
-
-						}
-					default:
-						break;
+						default:
+							break;
+					}
+					subject.removeHand(card);
+				})
+			})
+			// 修饰object的手牌
+			object.hand.forEach(function(card){
+				if(card.name==="闪"&&object.shaTarget){
+					card.showCard("optional")
+					card.cardButton.click(()=>{
+						object.shaTarget = false;
+					})
+				}
+				if(card.name==="桃"&&object.health()==="dying"){
+					card.showCard("optional")
+					card.cardButton.click(()=>{
+						object.body.hp++;
+					})
 				}
 			})
-		})
-		object.hand.forEach(function(card){
-			if(card.name==="闪"&&object.shaTarget){
-				card.showCard("optional")
-				card.cardButton.click(()=>{
-					object.shaTarget = false;
-				})
-			}
-			if(card.name==="桃"&&object.health()==="dying"){
-				card.showCard("optional")
-				card.cardButton.click(()=>{
-					object.body.hp++;
-				})
-			}
-		})
-		
+			abondonCard()	
+		 }
+
+
 		//弃牌
-		$("#"+subject.player+"Tips").text("弃牌阶段");
+		function abondonCard(){
+			let abondonNumber = subject.hand.length-subject.body.hp;
+			if (abondonNumber<=0) {
+				$("#"+subject.player+"Tips").text("弃牌阶段结束");
+				return
+			}
+			$("#"+subject.player+"Tips").text("弃牌阶段：你需要弃掉"+(abondonNumber)+"张牌");
+			subject.hand.forEach(function(card){
+				card.cardButton.off("click").click(()=>{
+					if(abondonNumber>0){
+						subject.removeHand(card);
+						abondonCard();
+					}
+				})
+			})
+		}
+
+
 		
 		// 准备下一回合
-		function finish(){
+		function finishRound(){
+			console.log("准备下一回合")
 			// 随机弃牌
 			if(subject.hand.length > subject.body.hp){
 				for(let i = 0;i < (subject.hand.length - subject.body.hp);i++){
 					subject.removeHand(subject.hand[subject.hand.length-1])
 				}
 			}
-			order++;			
+			order++;
+			// round()			
 		}
 
 	}
-	return round
 }
 
 // 游戏开始
@@ -260,17 +298,15 @@ function gameStart () {
 		kurisu.hide()
 	})
 	// 测试playStart函数
-	var round = playStart()
-	// while(1){
-	// 	round()
-	// }
+	playStart();
 }
 
 // 重新游戏
 function gameRestart(){
 	// 清除当前所有数据***
-	$("#mainpage").hide();
-	$("#start").show();	
+	location.reload();
+	// $("#mainpage").hide();
+	// $("#start").show();	
 }
 //结束对局
 function gameEnd () {

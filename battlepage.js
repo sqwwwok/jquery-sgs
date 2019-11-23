@@ -1,7 +1,7 @@
 /*
  * @Date: 2019-11-09 07:55:43
  * @LastEditors: sqwwwok
- * @LastEditTime: 2019-11-23 18:42:15
+ * @LastEditTime: 2019-11-23 18:51:33
  */
 
 
@@ -126,7 +126,7 @@ function playStart(){
 								if(card.name==="桃"){
 									card.cardButton.off("click").click(()=>{
 										taoDeal(subject,subject);
-										dyingSettle();
+										dyingSettle(subject);
 									});
 									
 								}

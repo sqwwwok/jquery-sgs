@@ -8,7 +8,7 @@
             "type": "chrome",
             "request": "launch",
             "name": "Launch Chrome against localhost",
-            "url": "C:/Documents/GitRepositories/SanGuoSha/index.html",
+            "url": "C:/Documents/GitRepositories/SanGuoSha/battlepage.html",
             "webRoot": "${workspaceFolder}"
         }
     ]

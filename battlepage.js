@@ -1,27 +1,18 @@
 /*
  * @Date: 2019-11-09 07:55:43
- * @LastEditors: sqwwwok
- * @LastEditTime: 2019-11-23 18:51:33
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2019-12-10 00:02:57
  */
 
-
- /**
-  * @Description: 返回0-maxnum(包括maxnum)的一个伪随机整数
-  * @Paraments: 
-  * @Return: 
-  */
-function newRandom (maxnum){
-	return Math.floor(Math.random()*(maxnum + 1))
-}
 
 function playStart(){
 	// 初始化对局
 	var subject, object;
 	var order = 1;
-	var player1 = new Person("player1","Qun","male","LvBu",4,null);
-	var player2 = new Person("player2","Qun","female","Diaochan",3,null);
+	var player0 = new Person("player0","Qun","male","LvBu",4,null);
+	var player1 = new Person("player1","Qun","female","Diaochan",3,null);
 	var library = new Library(50);
-	[player1,player2].map((current)=>{
+	[player0,player1].map((current)=>{
 		current.showBody();
 		current.drawCard(4,library);
 	});
@@ -31,9 +22,9 @@ function playStart(){
 		// 回合开始阶段
 		{
 			if(order%2 === 1){
-				[subject,object] = [player1,player2]
+				[subject,object] = [player0,player1]
 			}else{
-				[subject,object] = [player2,player1]
+				[subject,object] = [player1,player0]
 			}
 			$("#"+object.player+" .finish").remove();			
 			subject.hand.map((card)=>{card.cardButton.off("click")});
@@ -203,6 +194,9 @@ function playStart(){
 }
 
 // 游戏开始
+$("#start").click(gameStart);
+$("#restart").click(gameRestart);
+$("end").click(gameEnd);
 function gameStart () {
 	$("#start").hide();
 	$("#mainpage").show();
@@ -210,17 +204,30 @@ function gameStart () {
 	kurisu.hide();
 	kurisu.click(function(){
 		kurisu.hide()
-	})
+	});
+	// 初始化战斗界面布局
+	{	
+		function createDiv(idString) {
+			return $(document.createElement("div")).attr("id",idString)
+		
+		}
+		for(let i = 0;i<playerNumber;i++){
+			let str = "player"+i
+			let playerN = createDiv(str).addClass("player");	
+			$("#playBox").append(playerN);
+			["Body","Hand","Tip","Select"].forEach((current)=>{
+				playerN.append(createDiv(str+current));
+			})
+		}
+	}
+
 	// 测试playStart函数
 	playStart();
 }
 
 // 重新游戏
 function gameRestart(){
-	// 清除当前所有数据***
 	location.reload();
-	// $("#mainpage").hide();
-	// $("#start").show();	
 }
 //结束对局
 function gameEnd () {

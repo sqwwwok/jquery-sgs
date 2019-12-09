@@ -1,7 +1,7 @@
 <!--
  * @Date: 2019-11-01 11:09:17
- * @LastEditors: sqwwwok
- * @LastEditTime: 2019-11-23 18:14:01
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2019-12-09 23:50:40
  -->
 <!DOCTYPE html>
 <html>
@@ -9,31 +9,31 @@
 		<meta charset="utf-8">
 		<title>三国杀</title>
 		<script src="lib/jquery-3.4.1.js"></script>
+		<script src="config.js"></script>
 		<link href="battlepage_style.css" type="text/css" rel="stylesheet" />
 	</head>
 	<body>
-		<button type="button" id="start" onclick="gameStart()">开始游戏</button>
+		<button type="button" id="start">开始游戏</button>
 		<div id="mainpage">
 			<div>
 				<div id="sidebar"><img id="Kurisu" src="SanGuoKill/images/Kurisu.png"></div>
 				<div id="history"></div>
 				<div id="playBox">
-					<div class="player" id="player1">
+					<!-- <div class="player" id="player1">
 						<div id="player1Body"></div>
 						<div id="player1Hand"></div>
 						<div id="player1Tips"></div>
 						<div id="player1Select"></div>
 					</div>
-					<div id="battle"></div>
 					<div class="player" id="player2">
 						<div id="player2Body"></div>
 						<div id="player2Hand"></div>
 						<div id="player2Tips"></div>
 						<div id="player2Select"></div>
-					</div>
+					</div> -->
 				</div>
-			<button type="button" id="restart" onclick="gameRestart()">重新开始</button>
-			<button type="button" id="end" onclick="gameEnd()">结束游戏</button>
+			<button type="button" id="restart">重新开始</button>
+			<button type="button" id="end">结束游戏</button>
 			<script src="classes.js"></script>
 			<script src="battlepage.js"></script>
 		</div>

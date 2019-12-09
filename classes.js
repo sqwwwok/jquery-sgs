@@ -1,12 +1,13 @@
 /*
  * @Date: 2019-11-22 15:05:10
- * @LastEditors: sqwwwok
- * @LastEditTime: 2019-11-23 18:47:06
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2019-12-09 23:54:47
  */
 
-var suits = ["spade","daimond","club","heart"], 
-	points = ["A",2,3,4,5,6,7,8,9,10,"J","Q","K"], 
-	cardNames = ["杀","闪","桃","过河拆桥"];
+var suits = config.suits,
+	points = config.points, 
+	cardNames = config.cards,
+	playerNumber = config.playerNumber;
 
 // 卡牌
 class Card {

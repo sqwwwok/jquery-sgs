@@ -1,13 +1,43 @@
-/*
- * @Date: 2019-11-22 15:05:10
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2019-12-09 23:54:47
- */
+var suits = config.suits || ["spade","daimond","club","heart"],
+	points = config.points || ["A",2,3,4,5,6,7,8,9,10,"J","Q","K"], 
+	cardNames = config.cards || ["杀","闪","桃","过河拆桥"],
+	configPlayers = config.players || [
+        {
+            playerName:"sqwww",
+            nation:"群",
+            sex:"男",
+            name:"吕布",
+            hp:4,
+            skill:null
+        },
+        {
+            playerName:"sqwwwok",
+            nation:"群",
+            sex:"女",
+            name:"貂蝉",
+            hp:3,
+			skill:null
+		}
+	];
 
-var suits = config.suits,
-	points = config.points, 
-	cardNames = config.cards,
-	playerNumber = config.playerNumber;
+ /**
+  * @Description: 返回0-maxnum(包括maxnum)的一个伪随机整数
+  * @Paraments: 
+  * @Return: 
+  */
+ function newRandom (maxnum){
+	return Math.floor(Math.random()*(maxnum + 1))
+}
+
+
+/**
+ * @Description: 返回一个有 id 的 div 元素的jQuery对象
+ * @Paraments: idString(String)
+ * @Return: jQuery
+ */
+function createDiv(idString) {
+    return $(document.createElement("div")).attr("id",idString)
+}
 
 // 卡牌
 class Card {
@@ -60,9 +90,9 @@ class Library extends Array{
 		super();
 		for(let i = 0;i < num;i++){
 			this.push(new Card(
-				cardNames[newRandom(3)],
-				suits[newRandom(3)],
-				points[newRandom(12)]
+				cardNames[newRandom(cardNames.length-1)],
+				suits[newRandom(suits.length-1)],
+				points[newRandom(points.length-1)]
 			))
 		}
 	}
@@ -70,8 +100,8 @@ class Library extends Array{
 
 // 玩家
 class Person {
-	constructor(player,nation,sex,name,hp,skill) {
-		this.player = player;
+	constructor({playerName,nation,sex,name,hp,skill}) {
+		this.player = playerName;
 		this.body = {
 			nation:nation,
 			sex:sex,
@@ -164,7 +194,7 @@ class Person {
 		},this)
 	}
 	showTip(string){
-		$("#"+this.player+"Tips").text(string)
+		$("#"+this.player+"Tip").text(string)
 	}
 	/**
   * @Description: provide a once button for subject

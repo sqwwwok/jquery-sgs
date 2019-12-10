@@ -1,30 +1,54 @@
 /*
  * @Date: 2019-11-09 07:55:43
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2019-12-10 00:02:57
+ * @LastEditTime: 2019-12-10 13:41:23
  */
 
+$("#start").click(playStart);
+$("#restart").click(gameRestart);
+$("end").click(gameEnd);
 
+// 对局
 function playStart(){
+	$("#start").hide();
+	$("#mainpage").show();
+
+	// 初始化html	
+	if(config.kurisu) {
+		let kurisu = $("img#Kurisu");
+		kurisu.show();
+		kurisu.click(function(){
+			kurisu.hide()
+		});		
+	};
+	configPlayers.map((current)=>{
+		var str = current.playerName;
+		var playerN = createDiv(str).addClass("player");	
+		$("#playBox").append(playerN);
+		["Body","Hand","Tip","Select"].forEach((current)=>{
+			playerN.append(createDiv(str+current));
+		})
+	})
+
 	// 初始化对局
 	var subject, object;
 	var order = 1;
-	var player0 = new Person("player0","Qun","male","LvBu",4,null);
-	var player1 = new Person("player1","Qun","female","Diaochan",3,null);
 	var library = new Library(50);
-	[player0,player1].map((current)=>{
-		current.showBody();
-		current.drawCard(4,library);
+	var players = configPlayers.map((current)=>{
+		let player = new Person(current);
+		player.showBody();
+		player.drawCard(4,library);
+		return player;
 	});
+	
 	round();
-
 	function round() {
 		// 回合开始阶段
 		{
 			if(order%2 === 1){
-				[subject,object] = [player0,player1]
+				[subject,object] = players
 			}else{
-				[subject,object] = [player1,player0]
+				[object,subject] = players
 			}
 			$("#"+object.player+" .finish").remove();			
 			subject.hand.map((card)=>{card.cardButton.off("click")});
@@ -193,35 +217,10 @@ function playStart(){
 	}
 }
 
-// 游戏开始
-$("#start").click(gameStart);
-$("#restart").click(gameRestart);
-$("end").click(gameEnd);
+// 开始游戏
 function gameStart () {
-	$("#start").hide();
-	$("#mainpage").show();
-	var kurisu = $("img#Kurisu");
-	kurisu.hide();
-	kurisu.click(function(){
-		kurisu.hide()
-	});
-	// 初始化战斗界面布局
-	{	
-		function createDiv(idString) {
-			return $(document.createElement("div")).attr("id",idString)
-		
-		}
-		for(let i = 0;i<playerNumber;i++){
-			let str = "player"+i
-			let playerN = createDiv(str).addClass("player");	
-			$("#playBox").append(playerN);
-			["Body","Hand","Tip","Select"].forEach((current)=>{
-				playerN.append(createDiv(str+current));
-			})
-		}
-	}
 
-	// 测试playStart函数
+
 	playStart();
 }
 

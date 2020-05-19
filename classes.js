@@ -1,24 +1,4 @@
-var suits = config.suits || ["spade","daimond","club","heart"],
-	points = config.points || ["A",2,3,4,5,6,7,8,9,10,"J","Q","K"], 
-	cardNames = config.cards || ["杀","闪","桃","过河拆桥"],
-	configPlayers = config.players || [
-        {
-            playerName:"sqwww",
-            nation:"群",
-            sex:"男",
-            name:"吕布",
-            hp:4,
-            skill:null
-        },
-        {
-            playerName:"sqwwwok",
-            nation:"群",
-            sex:"女",
-            name:"貂蝉",
-            hp:3,
-			skill:null
-		}
-	];
+
 
  /**
   * @Description: 返回0-maxnum(包括maxnum)的一个伪随机整数
@@ -50,7 +30,8 @@ class Card {
 			this.description="fixed";
 			this.cardButton=$("<button></button>")
 				.attr("type","button")
-				.text(this.name+" "+this.suit+this.point)
+				.addClass(this.name)
+				.text(this.name+" "+this.suit+this.point);
 	}
 	/**
   * @Description: 
@@ -84,9 +65,9 @@ class Hand extends Array{
 	}
 }
 
-// 随机牌库
+// 牌库
 class Library extends Array{
-	constructor(num) {
+	constructor(num,cardNames,suits,points) {
 		super();
 		for(let i = 0;i < num;i++){
 			this.push(new Card(
@@ -110,7 +91,8 @@ class Person {
 			hp:hp,
 		};
 		this.skill=skill;
-		this.hand = new Hand(this)
+		this.hand = new Hand(this);
+		this.roundInfo = {myTurn:false}
 	}
 	health(){
 		if(this.body.maxHp===this.body.hp){
@@ -167,7 +149,7 @@ class Person {
 	}
 	/**
   * @Description: 
-  * @Paraments: Card Object or "random"
+  * @Paraments: Card or "random"
   * @Return: 
   */
 	removeCard(card){

@@ -19,5 +19,20 @@ var config = {
             hp:3,
             skill:null
         }],
-    kurisu:false
+    kurisu:false,
+    cardeffects:[
+        function sha(subject,object) {
+            
+        },
+        function shan(subject,object) {
+            
+        },
+        function tao(subject,object) {
+            
+        },
+        function guo(subject,object) {
+            
+        },
+    ]
+
 }
